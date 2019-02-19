@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		1E2906DF221BA68A00E636AA /* LookupFilters.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E2906DE221BA68A00E636AA /* LookupFilters.swift */; };
+		1E8195D4221BA784001A85A5 /* LookupFilters.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E2906DE221BA68A00E636AA /* LookupFilters.swift */; };
 		BC09239E1C92658200A2ADFA /* ShaderProgram_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC09239D1C92658200A2ADFA /* ShaderProgram_Tests.swift */; };
 		BC0923A11C92661D00A2ADFA /* Pipeline_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC09239F1C9265A600A2ADFA /* Pipeline_Tests.swift */; };
 		BC0923A21C92664900A2ADFA /* Framebuffer.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCB279EB1C8D11630013E213 /* Framebuffer.swift */; };
@@ -371,7 +371,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		1E2906DE221BA68A00E636AA /* LookupFilters.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LookupFilters.swift; sourceTree = "<group>"; };
+		1E2906DE221BA68A00E636AA /* LookupFilters.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = LookupFilters.swift; path = Source/LookupFilters.swift; sourceTree = "<group>"; };
 		BC09239D1C92658200A2ADFA /* ShaderProgram_Tests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ShaderProgram_Tests.swift; path = Tests/ShaderProgram_Tests.swift; sourceTree = SOURCE_ROOT; };
 		BC09239F1C9265A600A2ADFA /* Pipeline_Tests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Pipeline_Tests.swift; path = Tests/Pipeline_Tests.swift; sourceTree = SOURCE_ROOT; };
 		BC1E12F41C9F2FD7008F844F /* ThreeInput.vsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; name = ThreeInput.vsh; path = Source/Operations/Shaders/ThreeInput.vsh; sourceTree = "<group>"; };
@@ -1411,7 +1411,6 @@
 				BC9673411C8B897100FB64C2 /* FramebufferCache.swift in Sources */,
 				BC7FD0BB1CA7799B00037949 /* Halftone.swift in Sources */,
 				BC4EE15A1CB346F300AD8A65 /* SketchFilter.swift in Sources */,
-				1E2906DF221BA68A00E636AA /* LookupFilters.swift in Sources */,
 				BC7FD1751CB1C22200037949 /* Pixellate.swift in Sources */,
 				BC7FD1561CB0C42000037949 /* AmatorkaFilter.swift in Sources */,
 				BC4EE16F1CB3554200AD8A65 /* RawDataOutput.swift in Sources */,
@@ -1595,6 +1594,7 @@
 				BC9E357B1E5256F500B8604F /* AverageColorExtractor.swift in Sources */,
 				BC9E35701E5256D200B8604F /* LuminanceRangeReduction.swift in Sources */,
 				BC9E35A61E52577B00B8604F /* SwirlDistortion.swift in Sources */,
+				1E8195D4221BA784001A85A5 /* LookupFilters.swift in Sources */,
 				BC9E35341E524D7900B8604F /* Framebuffer.swift in Sources */,
 				BC9E35B31E5257A600B8604F /* EmbossFilter.swift in Sources */,
 				BC9E352E1E524D6F00B8604F /* ShaderUniformSettings.swift in Sources */,
