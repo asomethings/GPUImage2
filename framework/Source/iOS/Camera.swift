@@ -352,7 +352,7 @@ public class Camera: NSObject, ImageSource, AVCaptureVideoDataOutputSampleBuffer
     }
     
     private func cgImage(from buffer:Framebuffer) -> CGImage{
-        let renderFrame = sharedImageProcessingContext.framebufferCache.requestFramebufferWithProperties(orientation:framebuffer.orientation, size:framebuffer.size)
+        let renderFrame = sharedImageProcessingContext.framebufferCache.requestFramebufferWithProperties(orientation:framebuffer.orientation, size:buffer.size)
         renderFrame.lock()
         renderFrame.activateFramebufferForRendering()
         clearFramebufferWithColor(Color.red)
@@ -362,7 +362,7 @@ public class Camera: NSObject, ImageSource, AVCaptureVideoDataOutputSampleBuffer
         let imageByteSize = Int(buffer.size.width * buffer.size.height * 4)
         let data = UnsafeMutablePointer<UInt8>.allocate(capacity: imageByteSize)
         glReadPixels(0, 0, buffer.size.width, buffer.size.height, GLenum(GL_RGBA), GLenum(GL_UNSIGNED_BYTE), data)
-        renderFramebuffer.unlock()
+        renderFrame.unlock()
         guard let dataProvider = CGDataProvider(dataInfo:nil, data:data, size:imageByteSize, releaseData: dataProviderReleaseCallback) else {fatalError("Could not allocate a CGDataProvider")}
         let defaultRGBColorSpace = CGColorSpaceCreateDeviceRGB()
         self.silentMode = false
