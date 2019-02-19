@@ -68,7 +68,12 @@ public class Camera: NSObject, ImageSource, AVCaptureVideoDataOutputSampleBuffer
     public let captureSession:AVCaptureSession
     public let inputCamera:AVCaptureDevice!
     let videoInput:AVCaptureDeviceInput!
-    let videoOutput:AVCaptureVideoDataOutput!
+    public let videoOutput:AVCaptureVideoDataOutput!
+    
+    //Silent Mode | 무음 모드
+    public var silentImage:UIImage?
+    public var silentMode: Bool = false
+    
     var microphone:AVCaptureDevice?
     var audioInput:AVCaptureDeviceInput?
     var audioOutput:AVCaptureAudioDataOutput?
@@ -244,6 +249,12 @@ public class Camera: NSObject, ImageSource, AVCaptureVideoDataOutputSampleBuffer
                     conversionMatrix = colorConversionMatrix601Default
                 }
                 convertYUVToRGB(shader:self.yuvConversionShader!, luminanceFramebuffer:luminanceFramebuffer, chrominanceFramebuffer:chrominanceFramebuffer, resultFramebuffer:cameraFramebuffer, colorConversionMatrix:conversionMatrix)
+                
+                //무음모드
+                if self.silentMode {
+                    let cgImageFromBytes = self.cgImage(from: cameraFramebuffer)
+                    self.silentImage = UIImage(cgImage:cgImageFromBytes, scale:1.0, orientation:.up)
+                }
             } else {
                 cameraFramebuffer = sharedImageProcessingContext.framebufferCache.requestFramebufferWithProperties(orientation:self.location.imageOrientation(), size:GLSize(width:GLint(bufferWidth), height:GLint(bufferHeight)), textureOnly:true)
                 glBindTexture(GLenum(GL_TEXTURE_2D), cameraFramebuffer.texture)
@@ -338,5 +349,23 @@ public class Camera: NSObject, ImageSource, AVCaptureVideoDataOutputSampleBuffer
     
     func processAudioSampleBuffer(_ sampleBuffer:CMSampleBuffer) {
         self.audioEncodingTarget?.processAudioBuffer(sampleBuffer)
+    }
+    
+    private func cgImage(from buffer:Framebuffer) -> CGImage{
+        let renderFrame = sharedImageProcessingContext.framebufferCache.requestFramebufferWithProperties(orientation:framebuffer.orientation, size:framebuffer.size)
+        renderFrame.lock()
+        renderFrame.activateFramebufferForRendering()
+        clearFramebufferWithColor(Color.red)
+        renderQuadWithShader(sharedImageProcessingContext.passthroughShader, uniformSettings:ShaderUniformSettings(), vertexBufferObject:sharedImageProcessingContext.standardImageVBO, inputTextures:[buffer.texturePropertiesForOutputRotation(.noRotation)])
+        buffer.unlock()
+        
+        let imageByteSize = Int(buffer.size.width * buffer.size.height * 4)
+        let data = UnsafeMutablePointer<UInt8>.allocate(capacity: imageByteSize)
+        glReadPixels(0, 0, buffer.size.width, buffer.size.height, GLenum(GL_RGBA), GLenum(GL_UNSIGNED_BYTE), data)
+        renderFramebuffer.unlock()
+        guard let dataProvider = CGDataProvider(dataInfo:nil, data:data, size:imageByteSize, releaseData: dataProviderReleaseCallback) else {fatalError("Could not allocate a CGDataProvider")}
+        let defaultRGBColorSpace = CGColorSpaceCreateDeviceRGB()
+        self.silentMode = false
+        return CGImage(width:Int(buffer.size.width), height:Int(buffer.size.height), bitsPerComponent:8, bitsPerPixel:32, bytesPerRow:4 * Int(buffer.size.width), space:defaultRGBColorSpace, bitmapInfo:CGBitmapInfo() /*| CGImageAlphaInfo.Last*/, provider:dataProvider, decode:nil, shouldInterpolate:false, intent:.defaultIntent)!
     }
 }
