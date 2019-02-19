@@ -352,7 +352,7 @@ public class Camera: NSObject, ImageSource, AVCaptureVideoDataOutputSampleBuffer
     }
     
     private func cgImage(from buffer:Framebuffer) -> CGImage{
-        let renderFrame = sharedImageProcessingContext.framebufferCache.requestFramebufferWithProperties(orientation:framebuffer.orientation, size:buffer.size)
+        let renderFrame = sharedImageProcessingContext.framebufferCache.requestFramebufferWithProperties(orientation:buffer.orientation, size:buffer.size)
         renderFrame.lock()
         renderFrame.activateFramebufferForRendering()
         clearFramebufferWithColor(Color.red)
